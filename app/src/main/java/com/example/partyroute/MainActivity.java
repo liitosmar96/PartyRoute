@@ -1,6 +1,5 @@
 package com.example.partyroute;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,9 +12,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ListView;
 
-import com.example.partyroute.fragmentos.Eventos;
-import com.example.partyroute.fragmentos.Favoritos;
+import com.example.partyroute.fragmentos.EventosFragment;
+import com.example.partyroute.fragmentos.FavoritosFragment;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,9 +79,9 @@ public class MainActivity extends AppCompatActivity
         Boolean fragmentoSeleccionado = false;
 
         if (id == R.id.nav_eventos) {
-            cargarFragmento(new Eventos());
+            cargarFragmento(new EventosFragment());
         } else if (id == R.id.nav_favoritos) {
-            cargarFragmento(new Favoritos());
+            cargarFragmento(new FavoritosFragment());
         } else if (id == R.id.nav_login) {
 
         } else if (id == R.id.nav_tools) {
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            int i = 0;
         }
 
 
