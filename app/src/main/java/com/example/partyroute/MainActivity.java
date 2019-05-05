@@ -13,9 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.partyroute.fragmentos.CuentaUsuarioFragment;
 import com.example.partyroute.fragmentos.EventosFragment;
 import com.example.partyroute.fragmentos.FavoritosFragment;
+import com.example.partyroute.fragmentos.LoginFragment;
+import com.example.partyroute.model.Usuario;
 
 import java.util.List;
 
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -69,6 +74,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public static boolean LOGGED = false;
+    public static Usuario usuarioLogeado = new Usuario();
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -83,6 +91,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_favoritos) {
             cargarFragmento(new FavoritosFragment());
         } else if (id == R.id.nav_login) {
+
+            if (LOGGED) {
+                TextView t = findViewById(R.id.correoLogged);
+                t.setText(usuarioLogeado.getCorreo());
+                TextView n = findViewById(R.id.nombreLogged);
+                n.setText(usuarioLogeado.getNombre());
+                cargarFragmento(new CuentaUsuarioFragment());
+            } else {
+                cargarFragmento(new LoginFragment());
+            }
 
         } else if (id == R.id.nav_tools) {
 
