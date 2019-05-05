@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class UsuarioDaoImpl implements UsuarioDao, Response.ErrorListener, Response.Listener<JSONObject> {
+public class UsuarioDaoImpl implements UsuarioDao {
 
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
@@ -46,7 +46,31 @@ public class UsuarioDaoImpl implements UsuarioDao, Response.ErrorListener, Respo
         String url = "https://biconcave-concentra.000webhostapp.com/partyroute/get_usuario.php?CORREO=" + email;
         //requestQueue = Volley.newRequestQueue(Volleys.);
 
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                usuarioEjemplo = new Usuario();
+                JSONArray json = response.optJSONArray("usuario");
+                JSONObject jsonObject = null;
+
+                try {
+                    jsonObject = json.getJSONObject(0);
+                    String cifObtenido = jsonObject.optString("CIF");
+                    String nombreObtenido = jsonObject.optString("NOMBRE");
+                    String correoObtenido = jsonObject.optString("CORREO");
+
+                    usuarioEjemplo = new Usuario(cifObtenido, nombreObtenido, correoObtenido);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
         requestQueue.add(jsonObjectRequest);
 
 
@@ -58,6 +82,7 @@ public class UsuarioDaoImpl implements UsuarioDao, Response.ErrorListener, Respo
         return findByEmail(usr.getCorreo());
     }
 
+    /*
     @Override
     public void onErrorResponse(VolleyError error) {
 
@@ -81,4 +106,5 @@ public class UsuarioDaoImpl implements UsuarioDao, Response.ErrorListener, Respo
             e.printStackTrace();
         }
     }
+    */
 }

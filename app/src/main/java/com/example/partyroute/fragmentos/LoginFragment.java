@@ -33,7 +33,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener {
+public class LoginFragment extends Fragment {
 
     EditText correo, contrasena;
     Button botonAceptar;
@@ -80,7 +80,47 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
 
         //String url = "https://biconcave-concentra.000webhostapp.com/partyroute/login.php?CORREO=" + correo.getText().toString();
 
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressDialog.hide();
+
+                Usuario usuario = new Usuario();
+                JSONArray json = response.optJSONArray("clave");
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = json.getJSONObject(0);
+                    String claveObtenida = jsonObject.optString("CLAVE");
+
+                    if (claveObtenida.equals(getMD5(contrasena.getText().toString()))) {
+                        MainActivity.LOGGED = true;
+                        Toast.makeText(getContext(), "Loging CORRECTO", Toast.LENGTH_SHORT).show();
+
+                        CuentaUsuarioFragment.correo = correo.getText().toString();
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.contenedorFragmento, new CuentaUsuarioFragment())
+                                .addToBackStack(null)
+                                .commit();
+
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.hide();
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("ERROR", error.toString());
+            }
+        });
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -101,6 +141,7 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
     }
 
 
+    /*
     @Override
     public void onErrorResponse(VolleyError error) {
         progressDialog.hide();
@@ -140,4 +181,5 @@ public class LoginFragment extends Fragment implements Response.Listener<JSONObj
             throwable.printStackTrace();
         }
     }
+    */
 }

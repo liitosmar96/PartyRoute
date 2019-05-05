@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        cargarFragmento(new EventosFragment());
     }
 
     @Override
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment fragment = null;
         Boolean fragmentoSeleccionado = false;
 
         if (id == R.id.nav_eventos) {
@@ -91,15 +91,20 @@ public class MainActivity extends AppCompatActivity
             cargarFragmento(new FavoritosFragment());
         } else if (id == R.id.nav_login) {
 
+
             if (LOGGED) {
+                //Estas lineas actualizan el correo y el usuario en la barra desplegable
+                /*
                 TextView t = findViewById(R.id.correoLogged);
                 t.setText(usuarioLogeado.getCorreo());
                 TextView n = findViewById(R.id.nombreLogged);
                 n.setText(usuarioLogeado.getNombre());
+                */
                 cargarFragmento(new CuentaUsuarioFragment());
             } else {
                 cargarFragmento(new LoginFragment());
             }
+
 
         } else if (id == R.id.nav_tools) {
 
@@ -118,6 +123,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private void cargarFragmento(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();

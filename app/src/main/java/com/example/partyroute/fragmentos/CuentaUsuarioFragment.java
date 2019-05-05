@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,13 +29,14 @@ import org.json.JSONObject;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CuentaUsuarioFragment extends Fragment implements Response.ErrorListener, Response.Listener<JSONObject> {
+public class CuentaUsuarioFragment extends Fragment {
 
     EditText cif, nombre, txbCorreo;
 
 
     public static String correo;
     public static Usuario usuario;
+
     ProgressDialog progressDialog;
 
     RequestQueue requestQueue;
@@ -47,21 +49,22 @@ public class CuentaUsuarioFragment extends Fragment implements Response.ErrorLis
 
 
     View vista;
-    static boolean primeraVez = true;
+
+    TextView menuUsuario, menuCorreo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cuenta_usuario, container, false);
         cif = vista.findViewById(R.id.txbCIF);
         nombre = vista.findViewById(R.id.txbNombre);
         txbCorreo = vista.findViewById(R.id.txbCorreo);
 
-        requestQueue = Volley.newRequestQueue(getContext());
+        menuUsuario = vista.findViewById(R.id.nombreLogged);
+        menuCorreo = vista.findViewById(R.id.correoLogged);
 
+        requestQueue = Volley.newRequestQueue(getContext());
         cargarWebService("https://biconcave-concentra.000webhostapp.com/partyroute/get_usuario.php?CORREO=" + correo);
-        primeraVez = false;
 
 
         return vista;
@@ -75,47 +78,44 @@ public class CuentaUsuarioFragment extends Fragment implements Response.ErrorLis
 
         //String url = "https://biconcave-concentra.000webhostapp.com/partyroute/login.php?CORREO=" + correo.getText().toString();
 
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressDialog.hide();
+                JSONArray json = response.optJSONArray("usuario");
+                JSONObject jsonObject = null;
+
+                try {
+                    jsonObject = json.getJSONObject(0);
+                    String cifObtenido = jsonObject.optString("CIF");
+                    String nombreObtenido = jsonObject.optString("NOMBRE");
+                    String correoObtenido = jsonObject.optString("CORREO");
+
+                    usuario = new Usuario(cifObtenido, nombreObtenido, correoObtenido);
+                    MainActivity.usuarioLogeado = usuario;
+
+                    cif.setText(cifObtenido);
+                    nombre.setText(nombreObtenido);
+                    txbCorreo.setText(correoObtenido);
+
+                    //menuUsuario.setText(nombreObtenido);
+                    //menuCorreo.setText(correoObtenido);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.hide();
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("ERROR", error.toString());
+                MainActivity.LOGGED = false;
+            }
+        });
         requestQueue.add(jsonObjectRequest);
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        progressDialog.hide();
-        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-        Log.i("ERROR", error.toString());
-        MainActivity.LOGGED = false;
-    }
 
-    @Override
-    public void onResponse(JSONObject response) {
-
-        progressDialog.hide();
-        JSONArray json = response.optJSONArray("usuario");
-        JSONObject jsonObject = null;
-
-        try {
-            jsonObject = json.getJSONObject(0);
-            String cifObtenido = jsonObject.optString("CIF");
-            String nombreObtenido = jsonObject.optString("NOMBRE");
-            String correoObtenido = jsonObject.optString("CORREO");
-
-            usuario = new Usuario(cifObtenido, nombreObtenido, correoObtenido);
-            MainActivity.usuarioLogeado = usuario;
-
-            cif.setText(cifObtenido);
-            nombre.setText(nombreObtenido);
-            txbCorreo.setText(correoObtenido);
-
-            /*
-            TextView c = vista.findViewById(R.id.correoLogged);
-            c.setText(correoObtenido);
-
-            TextView n = vista.findViewById(R.id.nombreLogged);
-            n.setText(nombreObtenido);
-            */
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 }
