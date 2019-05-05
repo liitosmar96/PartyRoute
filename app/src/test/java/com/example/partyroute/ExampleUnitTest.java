@@ -1,5 +1,9 @@
 package com.example.partyroute;
 
+import com.example.partyroute.model.Usuario;
+import com.example.partyroute.service.UsuarioService;
+import com.example.partyroute.service.UsuarioServiceImpl;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,4 +18,14 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void pruebaUsuario() {
+        Usuario usr = new Usuario("1", "root", "root@root.com");
+
+        UsuarioService usuarioService = new UsuarioServiceImpl();
+
+        assertEquals(usuarioService.buscarPorCorreo("root@root.com"), usr);
+    }
+
 }

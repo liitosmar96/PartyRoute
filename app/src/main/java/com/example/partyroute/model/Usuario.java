@@ -41,4 +41,14 @@ public class Usuario {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        Usuario usuario = (Usuario) object;
+
+        if (usuario.getCorreo().equals(this.correo) && usuario.getNIF().equals(this.NIF) && usuario.getNombre().equals(this.nombre)) {
+            return true;
+        }
+        return false;
+    }
 }
