@@ -33,7 +33,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements Response.ErrorListener, Response.Listener<JSONObject> {
 
     EditText correo, contrasena;
     Button botonAceptar;
@@ -80,9 +80,11 @@ public class LoginFragment extends Fragment {
 
         //String url = "https://biconcave-concentra.000webhostapp.com/partyroute/login.php?CORREO=" + correo.getText().toString();
 
+        /*
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
                 progressDialog.hide();
 
                 Usuario usuario = new Usuario();
@@ -99,7 +101,7 @@ public class LoginFragment extends Fragment {
                         CuentaUsuarioFragment.correo = correo.getText().toString();
 
                         getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.contenedorFragmento, new CuentaUsuarioFragment())
+                                .replace(R.id.contenedorFragmento, new CuentaUsuarioFragment()).remove(this.)
                                 .addToBackStack(null)
                                 .commit();
 
@@ -121,6 +123,9 @@ public class LoginFragment extends Fragment {
                 Log.i("ERROR", error.toString());
             }
         });
+        */
+
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
         requestQueue.add(jsonObjectRequest);
     }
 
@@ -141,7 +146,9 @@ public class LoginFragment extends Fragment {
     }
 
 
-    /*
+
+
+
     @Override
     public void onErrorResponse(VolleyError error) {
         progressDialog.hide();
@@ -167,7 +174,7 @@ public class LoginFragment extends Fragment {
                 CuentaUsuarioFragment.correo = correo.getText().toString();
 
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.contenedorFragmento, new CuentaUsuarioFragment())
+                        .replace(R.id.contenedorFragmento, new CuentaUsuarioFragment()).remove(this)
                         .addToBackStack(null)
                         .commit();
 
@@ -181,5 +188,5 @@ public class LoginFragment extends Fragment {
             throwable.printStackTrace();
         }
     }
-    */
+
 }

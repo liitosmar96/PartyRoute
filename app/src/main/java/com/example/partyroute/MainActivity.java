@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //Si damos la posibilidad de volver hacia atrás salta un error classNotFound
+            //super.onBackPressed();
         }
     }
 
