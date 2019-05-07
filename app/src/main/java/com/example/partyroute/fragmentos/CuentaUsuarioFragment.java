@@ -60,8 +60,12 @@ public class CuentaUsuarioFragment extends Fragment {
         nombre = vista.findViewById(R.id.txbNombre);
         txbCorreo = vista.findViewById(R.id.txbCorreo);
 
+        /*
         menuUsuario = vista.findViewById(R.id.nombreLogged);
         menuCorreo = vista.findViewById(R.id.correoLogged);
+        */
+
+
 
         requestQueue = Volley.newRequestQueue(getContext());
         cargarWebService("https://biconcave-concentra.000webhostapp.com/partyroute/get_usuario.php?CORREO=" + correo);
@@ -91,12 +95,16 @@ public class CuentaUsuarioFragment extends Fragment {
                     String nombreObtenido = jsonObject.optString("NOMBRE");
                     String correoObtenido = jsonObject.optString("CORREO");
 
+                    /*
                     usuario = new Usuario(cifObtenido, nombreObtenido, correoObtenido);
                     MainActivity.usuarioLogeado = usuario;
+                    */
+
 
                     cif.setText(cifObtenido);
                     nombre.setText(nombreObtenido);
                     txbCorreo.setText(correoObtenido);
+
 
                     //menuUsuario.setText(nombreObtenido);
                     //menuCorreo.setText(correoObtenido);
