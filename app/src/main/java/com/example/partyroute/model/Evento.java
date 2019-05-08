@@ -4,29 +4,29 @@ import java.sql.Date;
 
 public class Evento {
     private int ID;
-    private Date fecha;
+    private String fecha;
     private String nombre;
     private String descripcion;
     private int latitud;
     private int longitud;
     private String edad;
     private int rate;
-    private byte[] imagen;
+    private String imagen;
 
     public Evento() {
         this.ID = 0;
         java.util.Date utilDate = new java.util.Date();
-        this.fecha = new java.sql.Date(utilDate.getTime());
+        this.fecha = "";//new java.sql.Date(utilDate.getTime());
         this.nombre = "Nombre";
         this.descripcion = "Descripcionaca besrtial sobre el evento que se celebra en mi culo";
         this.latitud = 0;
         this.longitud = 0;
         this.edad = "+" + ((int) (Math.random() * 100) + 1);
         this.rate = (int) (Math.random() * 10) + 1;
-        this.imagen = new byte[0];
+        this.imagen = "";
     }
 
-    public Evento(int ID, Date fecha, String nombre, String descripcion, int latitud, int longitud, String edad, int rate, byte[] imagen) {
+    public Evento(int ID, String fecha, String nombre, String descripcion, int latitud, int longitud, String edad, int rate, String imagen) {
         this();
         this.ID = ID;
         this.fecha = fecha;
@@ -47,11 +47,11 @@ public class Evento {
         this.ID = ID;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -103,11 +103,16 @@ public class Evento {
         this.rate = rate;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String toString() {
+        return "Evento[ID = " + ID + ", FECHA = " + fecha + ", NOMBRE = " + nombre + ", DESCRIPCION = " + descripcion + ", LATITUD = " + latitud + ", LONGITUD" + longitud +
+                ", EDAD = " + edad + ", RATE = " + rate + ", IMAGEN = " + imagen + "]";
     }
 }

@@ -12,23 +12,36 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
 import com.example.partyroute.model.Evento;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
 import java.util.logging.Logger;
+
+import static java.security.AccessController.getContext;
 
 public class Adaptador extends BaseAdapter {
 
     private static LayoutInflater layoutInflater = null;
     Context contexto;
 
-    Evento[] eventos;
+    List<Evento> eventos;
 
-    public Adaptador(Context contexto, Evento[] eventos) {
+    public Adaptador(Context contexto, List<Evento> eventos) {
         this.contexto = contexto;
         this.eventos = eventos;
         layoutInflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
@@ -45,17 +58,23 @@ public class Adaptador extends BaseAdapter {
         //ImageView imagen;
 
         TextView titulo = vista.findViewById(R.id.lblTitulo);
-        titulo.setText(eventos[position].getNombre() + " " + position);
-        System.out.println(eventos[position].getNombre());
+        titulo.setText(eventos.get(position).getNombre());
+        System.out.println(eventos.get(position).getNombre());
 
         TextView descripcion = vista.findViewById(R.id.lblDescripcion);
-        descripcion.setText(eventos[position].getDescripcion() + " " + position);
+        descripcion.setText(eventos.get(position).getDescripcion());
 
         TextView edad = vista.findViewById(R.id.lblEdad);
-        edad.setText(eventos[position].getEdad());
+        edad.setText(eventos.get(position).getEdad());
 
         RatingBar ratingBar = vista.findViewById(R.id.ratingBar);
-        ratingBar.setRating((eventos[position].getRate() / (float) 5) * 10);
+        ratingBar.setRating(eventos.get(position).getRate());
+
+
+        //Bitmap obtener_imagen = get_imagen(eventos.get(position).getImagen());
+        //imageView.setImageBitmap(obtener_imagen);
+
+
 
         /*
         imagen.setOnClickListener(new View.OnClickListener() {
@@ -67,12 +86,17 @@ public class Adaptador extends BaseAdapter {
         });
         */
 
+
+        ImageView imagen = vista.findViewById(R.id.imagenView);
+        Picasso.with(contexto).load(eventos.get(position).getImagen()).error(R.drawable.imagen).fit().centerInside().into(imagen);
+
+
         return vista;
     }
 
     @Override
     public int getCount() {
-        return eventos.length;
+        return eventos.size();
     }
 
     @Override
@@ -85,4 +109,43 @@ public class Adaptador extends BaseAdapter {
         return 0;
     }
 
+    private Bitmap get_imagen(String url) {
+        Bitmap bm = null;
+        try {
+            URL _url = new URL(url);
+            URLConnection con = _url.openConnection();
+            con.connect();
+            InputStream is = con.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();
+        } catch (IOException e) {
+
+        }
+        return bm;
+    }
+
+    Bitmap bitmap;
+/*
+    private void cargarWebServiceImagen(String urlImagen) {
+        urlImagen=urlImagen.replace(" ","%20");
+
+        ImageRequest imageRequest=new ImageRequest(urlImagen, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                bitmap=response;//SE MODIFICA
+                ImageView campoImagen =
+                campoImagen.setImageBitmap(response);
+            }
+        }, 0, 0, ImageView.ScaleType.CENTER, null, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("ERROR IMAGEN","Response -> "+error);
+            }
+        });
+        //  request.add(imageRequest);
+        VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(imageRequest);
+    }
+*/
 }

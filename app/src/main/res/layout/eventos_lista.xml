@@ -74,7 +74,7 @@
         android:textSize="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imagen"
+        app:layout_constraintStart_toEndOf="@+id/imagenView"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <RatingBar
@@ -85,12 +85,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:stepSize="0.5"
+        android:numStars="5"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <ImageView
-        android:id="@+id/imagen"
+        android:id="@+id/imagenView"
         android:layout_width="106dp"
         android:layout_height="97dp"
         android:layout_marginStart="8dp"
