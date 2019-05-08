@@ -1,5 +1,6 @@
 package com.example.partyroute;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.partyroute.activities.AnadirEventoActivity;
 import com.example.partyroute.fragmentos.CuentaUsuarioFragment;
 import com.example.partyroute.fragmentos.EventosFragment;
 import com.example.partyroute.fragmentos.FavoritosFragment;
@@ -145,5 +147,9 @@ public class MainActivity extends AppCompatActivity
     private void cargarFragmento(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.contenedorFragmento, fragment).commit();
+    }
+
+    public void btnAnadirEvento(View v){
+        startActivity(new Intent(this, AnadirEventoActivity.class));
     }
 }

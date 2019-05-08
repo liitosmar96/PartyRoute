@@ -2,12 +2,14 @@ package com.example.partyroute.fragmentos;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
+import com.example.partyroute.activities.AnadirEventoActivity;
 import com.example.partyroute.model.Usuario;
 
 import org.json.JSONArray;
@@ -44,7 +47,7 @@ public class CuentaUsuarioFragment extends Fragment {
 
     public CuentaUsuarioFragment() {
         // Required empty public constructor
-
+System.out.println("Constructor");
     }
 
 
@@ -55,6 +58,8 @@ public class CuentaUsuarioFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        System.out.println("onCreateView");
         vista = inflater.inflate(R.layout.fragment_cuenta_usuario, container, false);
         cif = vista.findViewById(R.id.txbCIF);
         nombre = vista.findViewById(R.id.txbNombre);
@@ -66,9 +71,11 @@ public class CuentaUsuarioFragment extends Fragment {
         */
 
 
-
         requestQueue = Volley.newRequestQueue(getContext());
         cargarWebService("https://biconcave-concentra.000webhostapp.com/partyroute/get_usuario.php?CORREO=" + correo);
+
+
+        Button botonAnadirEvento = vista.findViewById(R.id.cerrarSesion);
 
 
         return vista;
@@ -124,6 +131,7 @@ public class CuentaUsuarioFragment extends Fragment {
         });
         requestQueue.add(jsonObjectRequest);
     }
+
 
 
 }
