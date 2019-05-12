@@ -2,7 +2,6 @@ package com.example.partyroute.fragmentos;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,14 +21,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
-import com.example.partyroute.activities.AnadirEventosActivity;
 import com.example.partyroute.model.Usuario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -137,10 +133,6 @@ public class CuentaUsuarioFragment extends Fragment {
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void mostrarMisEventos(View v) {
-        Intent intent = new Intent(getContext(), AnadirEventosActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, cif_usuario);
-        startActivity(intent);
-    }
+
 
 }

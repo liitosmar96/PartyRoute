@@ -12,9 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.AnadirEventosActivity"
-            android:label="@string/title_activity_anadir_eventos"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".activities.EventosPorUserActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".spash.splash_activity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

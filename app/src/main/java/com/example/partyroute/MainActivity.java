@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.partyroute.activities.EventosPorUserActivity;
 import com.example.partyroute.fragmentos.CuentaUsuarioFragment;
 import com.example.partyroute.fragmentos.EventosFragment;
 import com.example.partyroute.fragmentos.FavoritosFragment;
@@ -144,7 +145,10 @@ public class MainActivity extends AppCompatActivity
         manager.beginTransaction().replace(R.id.contenedorFragmento, fragment).commit();
     }
 
-    public void btnAnadirEvento(View v){
-        startActivity(new Intent(this, AnadirEventoActivity.class));
+    public void mostrarMisEventos(View v) {
+        Intent intent = new Intent(this, EventosPorUserActivity.class);
+        TextView t = findViewById(R.id.txbCIF);
+        intent.putExtra("CIF", t.getText().toString());
+        startActivity(intent);
     }
 }
