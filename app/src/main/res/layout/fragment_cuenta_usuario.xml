@@ -148,17 +148,17 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <Button
-        android:id="@+id/btnAnadirEvento"
+        android:id="@+id/btnMisEventos"
         android:layout_width="370dp"
         android:layout_height="47dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/holo_orange_dark"
-        android:onClick="btnAnadirEvento"
-        android:text="Añadir evento"
+        android:onClick="mostrarMisEventos"
+        android:text="Mis Eventos"
         android:textColor="@color/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

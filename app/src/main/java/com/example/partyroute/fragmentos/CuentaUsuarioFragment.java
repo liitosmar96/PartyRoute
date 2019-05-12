@@ -22,12 +22,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
-import com.example.partyroute.activities.AnadirEventoActivity;
+import com.example.partyroute.activities.AnadirEventosActivity;
 import com.example.partyroute.model.Usuario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +49,7 @@ public class CuentaUsuarioFragment extends Fragment {
 
     public CuentaUsuarioFragment() {
         // Required empty public constructor
-System.out.println("Constructor");
+        System.out.println("Constructor");
     }
 
 
@@ -81,6 +83,8 @@ System.out.println("Constructor");
         return vista;
     }
 
+    String cif_usuario;
+
     public void cargarWebService(String url) {
 
         progressDialog = new ProgressDialog(getContext());
@@ -99,6 +103,7 @@ System.out.println("Constructor");
                 try {
                     jsonObject = json.getJSONObject(0);
                     String cifObtenido = jsonObject.optString("CIF");
+                    cif_usuario = cifObtenido;
                     String nombreObtenido = jsonObject.optString("NOMBRE");
                     String correoObtenido = jsonObject.optString("CORREO");
 
@@ -132,6 +137,10 @@ System.out.println("Constructor");
         requestQueue.add(jsonObjectRequest);
     }
 
-
+    public void mostrarMisEventos(View v) {
+        Intent intent = new Intent(getContext(), AnadirEventosActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, cif_usuario);
+        startActivity(intent);
+    }
 
 }

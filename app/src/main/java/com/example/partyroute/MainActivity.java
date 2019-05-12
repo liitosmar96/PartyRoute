@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -15,17 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.partyroute.activities.AnadirEventoActivity;
 import com.example.partyroute.fragmentos.CuentaUsuarioFragment;
 import com.example.partyroute.fragmentos.EventosFragment;
 import com.example.partyroute.fragmentos.FavoritosFragment;
 import com.example.partyroute.fragmentos.LoginFragment;
 import com.example.partyroute.model.Usuario;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
