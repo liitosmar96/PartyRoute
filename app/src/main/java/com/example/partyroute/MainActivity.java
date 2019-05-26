@@ -1,6 +1,9 @@
 package com.example.partyroute;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -80,9 +83,9 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if(id == R.id.cerrarSesion){
-            LOGGED=false;
+        } else if (id == R.id.cerrarSesion) {
+            item.setEnabled(false);
+            LOGGED = false;
             cargarFragmento(new LoginFragment());
         }
 
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static boolean LOGGED = false;
-    public static Usuario usuarioLogeado = new Usuario();
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -98,7 +101,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Boolean fragmentoSeleccionado = false;
 
         if (id == R.id.nav_eventos) {
             cargarFragmento(new EventosFragment());
@@ -130,10 +132,6 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        if (fragmentoSeleccionado) {
-
-        }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -145,10 +143,13 @@ public class MainActivity extends AppCompatActivity
         manager.beginTransaction().replace(R.id.contenedorFragmento, fragment).commit();
     }
 
+
     public void mostrarMisEventos(View v) {
         Intent intent = new Intent(this, EventosPorUserActivity.class);
         TextView t = findViewById(R.id.txbCIF);
         intent.putExtra("CIF", t.getText().toString());
         startActivity(intent);
     }
+
+
 }

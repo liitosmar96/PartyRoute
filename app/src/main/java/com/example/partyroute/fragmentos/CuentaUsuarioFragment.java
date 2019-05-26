@@ -2,6 +2,7 @@ package com.example.partyroute.fragmentos;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
+import com.example.partyroute.activities.EventosPorUserActivity;
 import com.example.partyroute.model.Usuario;
 
 import org.json.JSONArray;
@@ -34,7 +36,6 @@ public class CuentaUsuarioFragment extends Fragment {
 
     EditText cif, nombre, txbCorreo;
 
-
     public static String correo;
     public static Usuario usuario;
 
@@ -43,15 +44,14 @@ public class CuentaUsuarioFragment extends Fragment {
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
 
-    public CuentaUsuarioFragment() {
-        // Required empty public constructor
-        System.out.println("Constructor");
-    }
-
-
     View vista;
 
-    TextView menuUsuario, menuCorreo;
+    String cif_usuario;
+
+    public CuentaUsuarioFragment() {
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,11 +62,6 @@ public class CuentaUsuarioFragment extends Fragment {
         cif = vista.findViewById(R.id.txbCIF);
         nombre = vista.findViewById(R.id.txbNombre);
         txbCorreo = vista.findViewById(R.id.txbCorreo);
-
-        /*
-        menuUsuario = vista.findViewById(R.id.nombreLogged);
-        menuCorreo = vista.findViewById(R.id.correoLogged);
-        */
 
 
         requestQueue = Volley.newRequestQueue(getContext());
@@ -79,8 +74,12 @@ public class CuentaUsuarioFragment extends Fragment {
         return vista;
     }
 
-    String cif_usuario;
-
+    /**
+     * Metodo que rellena los textview con los datos del usuario que se ha registrado, recibe la url donde esta el php
+     * al que le pasa por parametro un correo, y devuelve un json con los datos del usuario
+     *
+     * @param url
+     */
     public void cargarWebService(String url) {
 
         progressDialog = new ProgressDialog(getContext());
@@ -132,7 +131,11 @@ public class CuentaUsuarioFragment extends Fragment {
         });
         requestQueue.add(jsonObjectRequest);
     }
-
-
-
+/*
+    public void mostrarMisEventos(View v) {
+        Intent intent = new Intent(getContext(), EventosPorUserActivity.class);
+        TextView t = vista.findViewById(R.id.txbCIF);
+        intent.putExtra("CIF", t.getText().toString());
+        startActivity(intent);
+    }*/
 }

@@ -15,6 +15,11 @@ import com.example.partyroute.R;
 public class splash_activity extends AppCompatActivity {
     private final int DURACION = 2000;
 
+    /**
+     * Metodo que muestra una pantalla de carga durante unos segundos
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

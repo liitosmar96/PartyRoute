@@ -1,6 +1,8 @@
 package com.example.partyroute.dao;
 
 
+import android.content.Context;
+
 import com.example.partyroute.model.Usuario;
 
 import java.util.List;

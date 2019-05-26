@@ -1,11 +1,15 @@
 package com.example.partyroute.dao;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.partyroute.model.Evento;
-import com.example.partyroute.model.Usuario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,49 +18,65 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDaoImpl implements UsuarioDao {
+public class EventoDaoImpl implements EventoDao {
 
     String URL_DATABASE = "https://biconcave-concentra.000webhostapp.com/partyroute/";
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
 
-    Usuario usuarioEjemplo;
+    EventoDao eventoDao;
 
     @Override
-    public List<Usuario> findAll() {
+    public List<Evento> findAll() {
         return null;
     }
 
     @Override
-    public Usuario findByID(int id) {
+    public Evento findByID(int id) {
         return null;
     }
 
     @Override
-    public Usuario findByID(Usuario usr) {
+    public Evento findByID(Evento usr) {
         return null;
     }
 
-
-    List<Evento> eventos = new ArrayList<>();
+    private List<Evento> eventos = new ArrayList<>();
 
     @Override
-    public Usuario findByEmail(String email) {
-        String url = URL_DATABASE + "get_usuario.php?CORREO=" + email;
-
-        List<Evento> eventos = new ArrayList<>();
+    public List<Evento> findByCif(Context context, String cif) {
+        String url = URL_DATABASE + "select_eventos_por_cif.php?CIF=" + cif;
 
 
+        requestQueue = Volley.newRequestQueue(context);
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONArray jsonArray = response.optJSONArray("evento");
+                Log.d("I", jsonArray.toString());
+                eventos = cargarEventos(jsonArray);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-        return usuarioEjemplo;
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+
+        return eventos;
     }
 
     @Override
-    public Usuario findByEmail(Usuario usr) {
-        //return findByEmail(usr.getCorreo());
+    public Evento findByEmail(Evento usr) {
         return null;
     }
 
+    /*
+    *
+    * Metodo que devuelve una List de Eventos sacados del JSONArray que se le pasa por parametro
+    *
+    * */
     public List<Evento> cargarEventos(JSONArray jsonArray) {
         List<Evento> l = new ArrayList<>();
         Log.d("I", "CANTIDAD DE EVENTOS: " + jsonArray.length());
@@ -72,30 +92,4 @@ public class UsuarioDaoImpl implements UsuarioDao {
         }
         return l;
     }
-
-    /*
-    @Override
-    public void onErrorResponse(VolleyError error) {
-
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        usuarioEjemplo = new Usuario();
-        JSONArray json = response.optJSONArray("usuario");
-        JSONObject jsonObject = null;
-
-        try {
-            jsonObject = json.getJSONObject(0);
-            String cifObtenido = jsonObject.optString("CIF");
-            String nombreObtenido = jsonObject.optString("NOMBRE");
-            String correoObtenido = jsonObject.optString("CORREO");
-
-            usuarioEjemplo = new Usuario(cifObtenido, nombreObtenido, correoObtenido);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 }
