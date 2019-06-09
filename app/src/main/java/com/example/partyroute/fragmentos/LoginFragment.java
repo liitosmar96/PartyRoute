@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,7 +23,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
-import com.example.partyroute.model.Usuario;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +55,6 @@ public class LoginFragment extends Fragment implements Response.ErrorListener, R
     View vista;
 
     public LoginFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -72,7 +68,6 @@ public class LoginFragment extends Fragment implements Response.ErrorListener, R
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_login, container, false);
 
         prefs = this.getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -158,7 +153,7 @@ public class LoginFragment extends Fragment implements Response.ErrorListener, R
     public void onErrorResponse(VolleyError error) {
         progressDialog.hide();
         Toast.makeText(getContext(), error.toString(), Toast.LENGTH_SHORT).show();
-        Log.i("ERROR", error.toString());
+        Log.e("ERROR", error.toString());
     }
 
     /**
@@ -170,9 +165,8 @@ public class LoginFragment extends Fragment implements Response.ErrorListener, R
     public void onResponse(JSONObject response) {
         progressDialog.hide();
 
-        Usuario usuario = new Usuario();
         JSONArray json = response.optJSONArray("clave");
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         try {
             jsonObject = json.getJSONObject(0);
             String claveObtenida = jsonObject.optString("CLAVE");
@@ -183,24 +177,17 @@ public class LoginFragment extends Fragment implements Response.ErrorListener, R
 
                 CuentaUsuarioFragment.correo = correo.getText().toString();
 
-                /*
-                MenuItem item = getActivity().findViewById(R.id.cerrarSesion);
-                item.setEnabled(true);
-                */
-
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.contenedorFragmento, new CuentaUsuarioFragment()).remove(this)
                         .addToBackStack(null)
                         .commit();
-
-
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.toString());
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            Log.e("ERROR", throwable.toString());
         }
     }
 

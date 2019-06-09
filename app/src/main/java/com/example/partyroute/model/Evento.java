@@ -1,6 +1,8 @@
 package com.example.partyroute.model;
 
-public class Evento {
+import java.io.Serializable;
+
+public class Evento implements Serializable {
     private int ID;
     private String fecha;
     private String nombre;
@@ -11,23 +13,26 @@ public class Evento {
 
     public Evento() {
         this.ID = 0;
-        //java.util.Date utilDate = new java.util.Date();
-        this.fecha = "";//new java.sql.Date(utilDate.getTime());
+        this.fecha = "";
         this.nombre = "";
         this.descripcion = "";
         this.edad = "+0";
         this.imagen = "";
     }
 
-    public Evento(int ID, String fecha, String nombre, String descripcion, String direccion, String edad, String imagen) {
+    public Evento(String fecha, String nombre, String descripcion, String direccion, String edad, String imagen) {
         this();
-        this.ID = ID;
         this.fecha = fecha;
         this.descripcion = descripcion;
-        this.setDireccion(direccion);
+        this.direccion = direccion;
         this.nombre = nombre;
         this.edad = edad;
         this.imagen = imagen;
+    }
+
+    public Evento(int ID, String fecha, String nombre, String descripcion, String direccion, String edad, String imagen) {
+        this(fecha, nombre,descripcion,direccion,edad,imagen);
+        this.ID = ID;
     }
 
     public int getID() {

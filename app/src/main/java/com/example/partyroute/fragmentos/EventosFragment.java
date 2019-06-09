@@ -1,7 +1,6 @@
 package com.example.partyroute.fragmentos;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +26,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.partyroute.MainActivity;
 import com.example.partyroute.R;
 import com.example.partyroute.model.Evento;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,11 +44,8 @@ import java.util.Set;
 public class EventosFragment extends Fragment implements ListView.OnItemClickListener, ListView.OnItemLongClickListener, Response.ErrorListener, Response.Listener<JSONObject> {
 
     ListView lista;
-    Activity activity = getActivity();
-    //Obtener datos de eventos
-    //Evento[] eventos = new Evento[30];
 
-    List<Evento> eventos = new ArrayList<>();
+    static List<Evento> eventos = new ArrayList<>();
 
     SharedPreferences prefs;
     Set<String> favoritos = new HashSet<>();
@@ -59,15 +54,10 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
     RequestQueue requestQueue;
     JsonObjectRequest jsonObjectRequest;
 
+    private SwipeRefreshLayout refreshLayout;
+
     public EventosFragment() {
-        System.out.println("Constructor");
-        // Required empty public constructor
-        /*
-        for (int i = 0; i < eventos.length; i++) {
-            eventos[i] = new Evento();
-        }
-        */
-        //cargarWebservice("https://biconcave-concentra.000webhostapp.com/partyroute/get_eventos.php");
+
     }
 
     @Override
@@ -75,10 +65,9 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
                              Bundle savedInstanceState) {
 
         prefs = this.getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
         favoritos = prefs.getStringSet("favoritos", new HashSet<String>());
 
-        System.out.println("Preferencias cargadas: " + favoritos);
+        Log.d("INFO", "Preferencias cargadas: " + favoritos);
 
         final View rootView = inflater.inflate(R.layout.fragment_eventos, container, false);
         requestQueue = Volley.newRequestQueue(getContext());
@@ -86,20 +75,35 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
         cargarWebservice("https://biconcave-concentra.000webhostapp.com/partyroute/get_eventos.php");
 
         lista = rootView.findViewById(R.id.lista);
-        //lista.setAdapter(new Adaptador(this.getContext(), eventos));
-        //lista.setOnItemClickListener(this);
 
         lista.setOnItemLongClickListener(this);
+        lista.setOnItemClickListener(this);
+        refreshLayout = rootView.findViewById(R.id.RefreshLayout);
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                cargarWebservice("https://biconcave-concentra.000webhostapp.com/partyroute/get_eventos.php");
+            }
+        });
 
-        System.out.println("Termina onCreate");
         return rootView;
     }
 
+    /**
+     * Metodo que lanza un intent de Google Maps cuando se pulsa un elemento de la lista
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
+        TextView direccion = view.findViewById(R.id.lblDireccion);
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + direccion.getText().toString());
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
     /**
@@ -108,9 +112,6 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
      * @param url
      */
     public void cargarWebservice(String url) {
-        //String url = "https://biconcave-concentra.000webhostapp.com/partyroute/get_eventos.php";
-        //favoritos = prefs.getStringSet("favoritos", new HashSet<String>());
-
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Cargando...");
         progressDialog.show();
@@ -119,6 +120,10 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
         requestQueue.add(jsonObjectRequest);
     }
 
+    /**
+     * Metodo que muestra el error producido al conectarse al servidor
+     * @param error
+     */
     @Override
     public void onErrorResponse(VolleyError error) {
         progressDialog.hide();
@@ -134,7 +139,6 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
     @Override
     public void onResponse(JSONObject response) {
         JSONArray jsonArray = response.optJSONArray("evento");
-        //Log.d("I", jsonArray.toString());
         eventos = cargarEventos(jsonArray);
         Adapter adapter = new Adaptador(this.getContext(), eventos);
         lista.setAdapter(new Adaptador(this.getContext(), eventos));
@@ -152,6 +156,7 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
             }
         }
         progressDialog.hide();
+        refreshLayout.setRefreshing(false);
     }
 
     /**
@@ -162,12 +167,11 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
      */
     public List<Evento> cargarEventos(JSONArray jsonArray) {
         List<Evento> l = new ArrayList<>();
-        Log.d("I", "CANTIDAD DE EVENTOS: " + jsonArray.length());
+        Log.d("INFO", "CANTIDAD DE EVENTOS: " + jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject object = jsonArray.getJSONObject(i);
                 l.add(new Evento(object.getInt("ID"), object.getString("FECHA"), object.getString("NOMBRE"), object.getString("DESCRIPCION"), object.getString("DIRECCION"), object.getString("EDAD"), object.getString("IMAGEN")));
-                Log.d("I", l.get(i).toString());
             } catch (JSONException jse) {
                 jse.printStackTrace();
             }
@@ -187,23 +191,19 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         ImageView img = view.findViewById(R.id.imagenFav);
-        TextView t = view.findViewById(R.id.lblTitulo);
+        TextView titulo = view.findViewById(R.id.lblTitulo);
 
         SharedPreferences.Editor editor = prefs.edit();
 
-        if (!favoritos.contains(t.getText().toString())) {
-            favoritos.add(t.getText().toString());
+        if (!favoritos.contains(titulo.getText().toString())) {
+            favoritos.add(titulo.getText().toString());
             img.setImageResource(R.drawable.estrella_selected);
-            System.out.println("AÑADIENDO");
-            System.out.println(favoritos);
         } else {
-            favoritos.remove(t.getText().toString());
-            img.setImageResource(R.drawable.estrella);
-            System.out.println("ELIMINANDO");
-            System.out.println(favoritos);
+            favoritos.remove(titulo.getText().toString());
+            img.setImageResource(0);
         }
-        editor.putStringSet("favoritos", favoritos);
-        editor.commit();
+        editor.remove("favoritos").commit();
+        editor.putStringSet("favoritos", this.favoritos).commit();
         return true;
     }
 }

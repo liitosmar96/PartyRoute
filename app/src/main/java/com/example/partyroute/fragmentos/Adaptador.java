@@ -1,6 +1,7 @@
 package com.example.partyroute.fragmentos;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.example.partyroute.R;
 import com.example.partyroute.model.Evento;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +35,6 @@ public class Adaptador extends BaseAdapter {
      * @param eventos
      */
     public Adaptador(Context contexto, List<Evento> eventos) {
-        //super(contexto, 0, eventos);
         this.contexto = contexto;
         this.eventos = eventos;
         layoutInflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
@@ -55,7 +56,6 @@ public class Adaptador extends BaseAdapter {
 
         TextView titulo = vista.findViewById(R.id.lblTitulo);
         titulo.setText(eventos.get(position).getNombre());
-        System.out.println(eventos.get(position).getNombre());
 
         TextView descripcion = vista.findViewById(R.id.lblDescripcion);
         descripcion.setText(eventos.get(position).getDescripcion());
@@ -63,19 +63,23 @@ public class Adaptador extends BaseAdapter {
         TextView edad = vista.findViewById(R.id.lblEdad);
         edad.setText(eventos.get(position).getEdad());
 
-        TextView direccion = vista.findViewById(R.id.descripcion);
+        TextView direccion = vista.findViewById(R.id.lblDireccion);
         direccion.setText(eventos.get(position).getDireccion());
 
         estrellaFav = vista.findViewById(R.id.imagenFav);
-        /*
+
+        SharedPreferences prefs = contexto.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        favoritos = prefs.getStringSet("favoritos", new HashSet<String>());
+
         if (favoritos.contains(titulo.getText().toString())){
             estrellaFav.setImageResource(R.drawable.estrella_selected);
         }
-        */
 
         ImageView imagen = vista.findViewById(R.id.imagenView);
         Picasso.with(contexto).load(eventos.get(position).getImagen()).error(R.drawable.imagen).fit().centerInside().into(imagen);
 
+        TextView fecha = vista.findViewById(R.id.fecha);
+        fecha.setText(eventos.get(position).getFecha());
         return vista;
     }
 

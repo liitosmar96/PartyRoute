@@ -1,9 +1,10 @@
 package com.example.partyroute;
 
 import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,13 +19,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.partyroute.activities.EventosPorUserActivity;
 import com.example.partyroute.fragmentos.CuentaUsuarioFragment;
 import com.example.partyroute.fragmentos.EventosFragment;
 import com.example.partyroute.fragmentos.FavoritosFragment;
 import com.example.partyroute.fragmentos.LoginFragment;
-import com.example.partyroute.model.Usuario;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,8 +33,13 @@ public class MainActivity extends AppCompatActivity
 
     TextView correoLogged;
 
+    public static boolean LOGGED = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -92,15 +98,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public static boolean LOGGED = false;
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
 
         if (id == R.id.nav_eventos) {
             cargarFragmento(new EventosFragment());
@@ -123,27 +126,34 @@ public class MainActivity extends AppCompatActivity
             }
 
 
-        } else if (id == R.id.nav_tools) {
-
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-            int i = 0;
+            String text = "Enlace a Party Route en PlayStore";
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("text",  text);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(this, "Enlace copiado al portapapeles.", Toast.LENGTH_SHORT).show();
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-
+    /**
+     * Metodo que carga el fragmento que se le pasa por parametro
+     * @param fragment
+     */
     private void cargarFragmento(Fragment fragment) {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.contenedorFragmento, fragment).commit();
     }
 
-
+    /**
+     * Metodo que lanza una actividad que muestra los eventos de un usuario, lo situo aquí porque si no, no detecta el método,
+     * pero aún asi da error, lo que pasa es que funciona. Esto ocurre porque el contexto de todos los fragment es el de MainActivity,
+     * que es donde se cargan
+     * @param v
+     */
     public void mostrarMisEventos(View v) {
         Intent intent = new Intent(this, EventosPorUserActivity.class);
         TextView t = findViewById(R.id.txbCIF);

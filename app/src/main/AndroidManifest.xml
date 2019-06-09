@@ -7,11 +7,14 @@
 
     <!-- Permiso para leer y guardar en la galeria -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:requiredFeature="true" />
 
     <!-- Permiso para usar la camara -->
-    <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:requiredFeature="true" />
 
 
     <application

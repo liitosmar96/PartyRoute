@@ -26,7 +26,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Nombre:"
+        android:text="@string/nombre_usr"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Correo:"
+        android:text="@string/correo"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Tu cuenta"
+        android:text="@string/tu_cuenta"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -135,30 +135,29 @@
         app:layout_constraintGuide_begin="340dp" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="370dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/holo_orange_dark"
-        android:text="actualizar datos"
-        android:textColor="@color/ic_launcher_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8" />
-
-    <Button
-        android:id="@+id/btnMisEventos"
+        android:id="@+id/cerrarSesion"
         android:layout_width="370dp"
         android:layout_height="47dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/holo_orange_dark"
-        android:onClick="mostrarMisEventos"
-        android:text="Mis Eventos"
+        android:text="@string/cerrar_sesi_n"
         android:textColor="@color/ic_launcher_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnMisEventos"
+        android:layout_width="370dp"
+        android:layout_height="47dp"
+        android:background="@android:color/holo_orange_dark"
+        android:onClick="mostrarMisEventos"
+        android:text="@string/mis_eventos"
+        android:textColor="@color/ic_launcher_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
 </android.support.constraint.ConstraintLayout>
