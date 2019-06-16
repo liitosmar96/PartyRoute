@@ -76,7 +76,13 @@ public class Adaptador extends BaseAdapter {
         }
 
         ImageView imagen = vista.findViewById(R.id.imagenView);
-        Picasso.with(contexto).load(eventos.get(position).getImagen()).error(R.drawable.imagen).fit().centerInside().into(imagen);
+        Picasso.with(contexto)
+                .load(eventos.get(position)
+                .getImagen())
+                .error(R.drawable.imagen)
+                .fit()
+                .centerInside()
+                .into(imagen);
 
         TextView fecha = vista.findViewById(R.id.fecha);
         fecha.setText(eventos.get(position).getFecha());

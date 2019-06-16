@@ -44,7 +44,7 @@ public class CuentaUsuarioFragment extends Fragment implements View.OnClickListe
 
     View vista;
 
-    public static String cif_usuario;
+    public static String cif_usuario="";
 
     public CuentaUsuarioFragment() {
 
@@ -57,7 +57,7 @@ public class CuentaUsuarioFragment extends Fragment implements View.OnClickListe
         cif = vista.findViewById(R.id.txbCIF);
         nombre = vista.findViewById(R.id.txbNombre);
         txbCorreo = vista.findViewById(R.id.txbCorreo);
-
+        cif_usuario="";
         Button botonCerrar = vista.findViewById(R.id.cerrarSesion);
         botonCerrar.setOnClickListener(this);
 

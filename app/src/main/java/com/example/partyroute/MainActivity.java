@@ -29,9 +29,8 @@ import com.example.partyroute.fragmentos.LoginFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public static String valor = "Inicia sesion primero.";
 
-    TextView correoLogged;
+    TextView bienvenida;
 
     public static boolean LOGGED = false;
 
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -54,8 +52,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         View header = navigationView.getHeaderView(0);
-        correoLogged = (TextView) header.findViewById(R.id.correoLogged);
-        correoLogged.setText(valor);
+        bienvenida = header.findViewById(R.id.correoLogged);
 
         navigationView.setNavigationItemSelectedListener(this);
         cargarFragmento(new EventosFragment());
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -89,12 +86,7 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.cerrarSesion) {
-            item.setEnabled(false);
-            LOGGED = false;
-            cargarFragmento(new LoginFragment());
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -109,22 +101,16 @@ public class MainActivity extends AppCompatActivity
             cargarFragmento(new EventosFragment());
         } else if (id == R.id.nav_favoritos) {
             cargarFragmento(new FavoritosFragment());
-        } else if (id == R.id.nav_login) {
 
+        } else
+
+            if (id == R.id.nav_login) {
 
             if (LOGGED) {
-                //Estas lineas actualizan el correo y el usuario en la barra desplegable
-                /*
-                TextView t = findViewById(R.id.correoLogged);
-                t.setText(usuarioLogeado.getCorreo());
-                TextView n = findViewById(R.id.nombreLogged);
-                n.setText(usuarioLogeado.getNombre());
-                */
                 cargarFragmento(new CuentaUsuarioFragment());
             } else {
                 cargarFragmento(new LoginFragment());
             }
-
 
         } else if (id == R.id.nav_share) {
             String text = "Enlace a Party Route en PlayStore";
@@ -160,6 +146,4 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("CIF", t.getText().toString());
         startActivity(intent);
     }
-
-
 }

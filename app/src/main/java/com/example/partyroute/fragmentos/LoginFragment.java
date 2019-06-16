@@ -77,8 +77,8 @@ public class LoginFragment extends Fragment implements Response.ErrorListener, R
         checkBox = vista.findViewById(R.id.cbRecordar);
 
         //Intentamos recoger las preferencias que hay guardadas
-        correo.setText(prefs.getString("email", "root@root.com"));
-        contrasena.setText(prefs.getString("clave", "root"));
+        correo.setText(prefs.getString("email", ""));
+        contrasena.setText(prefs.getString("clave", ""));
         checkBox.setChecked(prefs.getBoolean("checked", true));
 
         botonAceptar = vista.findViewById(R.id.btnAceptar);

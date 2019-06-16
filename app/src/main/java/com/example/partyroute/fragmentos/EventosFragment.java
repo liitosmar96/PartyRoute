@@ -70,8 +70,8 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
         Log.d("INFO", "Preferencias cargadas: " + favoritos);
 
         final View rootView = inflater.inflate(R.layout.fragment_eventos, container, false);
-        requestQueue = Volley.newRequestQueue(getContext());
 
+        requestQueue = Volley.newRequestQueue(getContext());
         cargarWebservice("https://biconcave-concentra.000webhostapp.com/partyroute/get_eventos.php");
 
         lista = rootView.findViewById(R.id.lista);
@@ -151,8 +151,6 @@ public class EventosFragment extends Fragment implements ListView.OnItemClickLis
             if (favoritos.contains(nombre)) {
                 System.out.println("Estaba guardado el nombre: " + nombre);
                 View v = lista.getChildAt(i);
-                //ImageView img = v.findViewById(R.id.imagenFav);
-                //img.setImageResource(R.drawable.estrella_selected);
             }
         }
         progressDialog.hide();

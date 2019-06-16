@@ -65,8 +65,7 @@ public class AddEventActivity extends AppCompatActivity {
     RequestQueue requestQueue;
 
     String cif;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
